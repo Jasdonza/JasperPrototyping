@@ -3,10 +3,13 @@
 ## Day 1 (11/18)
 
 ### What did you do?
+I made work on the collector
 
 ### What challenges did you have?
+a piece of code didn't want to work, I got help from my table partner
 
 ### What do you plan to do tomorrow?
+finish up the collector, and work on the indexer
 
 ## Day 2 (11/19)
 
