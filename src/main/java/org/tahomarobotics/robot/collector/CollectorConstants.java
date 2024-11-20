@@ -73,10 +73,9 @@ public class CollectorConstants {
                     .withSensorToMechanismRatio(1 / DEPLOY_GEAR_REDUCTION))
             .withAudio(new AudioConfigs().withBeepOnBoot(true).withBeepOnConfig(true));
 
-    public static final double DEPLOY_STOW_POSITION = 0; // Rotations
-    public static final double DEPLOY_DEPLOY_POSITION = 0; // Rotations
-    public static final double DEPLOY_EJECT_POSITION = 0; // Rotations
+    public static final double DEPLOYMENT_DEPLOY_POSITION = 0; // Rotations
 
-    public static final double COLLECTOR_COLLECT_VELOCITY = 1000; // Rotations / Sec
-    public static final double COLLECTOR_EJECT_VELOCITY = -COLLECTOR_COLLECT_VELOCITY; // Rotations / Sec
+
+    public static final double COLLECTOR_COLLECT_RPS = 15; // Rotations / Sec
+    public static final double COLLECTOR_EJECT_VELOCITY = -COLLECTOR_COLLECT_RPS; // Rotations / Sec
 }

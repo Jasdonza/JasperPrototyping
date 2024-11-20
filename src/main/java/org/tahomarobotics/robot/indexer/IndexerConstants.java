@@ -8,6 +8,7 @@ public class IndexerConstants {
     static final double INDEX_RPS = 8;
 
     static final double INTAKE_RPS = 15;
+    static final double EJECT_RPS = -INTAKE_RPS;
     private static final double INTAKE_ACCEL = INTAKE_RPS / 0.25;
     private static final double INTAKE_JERK = INTAKE_RPS / 0.125;
 

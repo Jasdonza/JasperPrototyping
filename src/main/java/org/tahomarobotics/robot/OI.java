@@ -6,6 +6,7 @@
 package org.tahomarobotics.robot;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.tahomarobotics.robot.collector.Collector;
 import org.tahomarobotics.robot.indexer.Indexer;
@@ -26,6 +27,7 @@ public class OI extends SubsystemIF {
         CommandScheduler.getInstance().unregisterSubsystem(this);
 
         configureBindings();
+
     }
 
     /**

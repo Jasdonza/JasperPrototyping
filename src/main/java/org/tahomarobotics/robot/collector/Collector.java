@@ -15,32 +15,57 @@ public class Collector extends SubsystemIF {
     private static final Collector INSTANCE = new Collector();
 
     // MOTORS
+    //THEY ORS A MOT
     private final TalonFX deployLeft = new TalonFX(RobotMap.DEPLOY_MOTOR_LEFT);
     private final TalonFX deployRight = new TalonFX(RobotMap.DEPLOY_MOTOR_RIGHT);
     private final TalonFX collectMotor = new TalonFX(RobotMap.COLLECTOR_MOTOR);
-//Movement magic stuff
+
+    //Movement magic stuff
     private final MotionMagicVoltage collectorControl = new MotionMagicVoltage(CollectorConstants.STOW_POSITION);
     private final MotionMagicVelocityVoltage deploymentControl = new MotionMagicVelocityVoltage(0);
 
     // CONTROL REQUESTS
+    //I REQUEST CONTROL NOW
+
+    @Override
+    public void periodic() {
+        switch (deploymentState) {
+            case DEPLOYED -> {
+                if (!shouldDeploy) deploymentStow();
+                if (shouldEject) collectorEject();
+            }
+            case EJECT -> {
+                if (!shouldEject) deploymentUnEject();
+            }
+            case STOWED -> {
+                if (!shouldStow) deploymentDeploy();
+                if (shouldEject) deploymentEject();
+            }
+            case ZEROING -> {
+            }
+        }
+
+        switch (collectionState) {
+            case COLLECTING -> {
+                if (!shouldDeploy) collectorDisabled();
+                if (shouldEject) collectorEject();
+            }
+            case EJECTING -> {
+            }
+            case DISABLED -> {
+                if (shouldDeploy) collectorCollect();
+                if (shouldEject) collectorEject();
+            }
+        }
+    }
+
 
     // STATUS SIGNALS
+    //(TRAIN SIGNAL NOISE) FULL STEAM AHE- WAIT, THEIR ZEROING.
 
     private DeploymentState deploymentState = DeploymentState.ZEROING,
             preEjectState;
     private CollectionState collectionState = CollectionState.DISABLED;
-
-
-    @Override
-    public void periodic() {
-        switch (deploymentState){
-            case DEPLOYED -> {
-                if (!shouldDeploy) ();
-                if (shouldEject) pivotEject();
-            }
-        }
-
-    }
 
 
     private Collector() {
@@ -59,8 +84,8 @@ public class Collector extends SubsystemIF {
         return INSTANCE;
     }
 
-
     // GETTERS
+    //"YOU HAVE THIS INFORMATION? IT'S OUR'S NOW, COMRADE"
 
     public double getLeftPivotVelocity() {
         return deployLeft.getVelocity().getValueAsDouble();
@@ -71,13 +96,14 @@ public class Collector extends SubsystemIF {
     }
 
     // SETTERS
+    //OH BOY, HERE I GO SETTING AGAIN
 
     private void setDeployPos(double pos) {
         deployLeft.setControl(collectorControl.withPosition(pos));
         deployRight.setControl(collectorControl.withPosition(pos));
     }
 
-    private void setDeployVelocity(double velocity) {
+    private void setCollectorVelocity(double velocity) {
     collectMotor.setControl(deploymentControl.withVelocity(velocity));
     }
 
@@ -91,19 +117,59 @@ public class Collector extends SubsystemIF {
         deployRight.setPosition(0);
     }
 
-
-
     // STATE MACHINE
+    //I STATE, THE MACHINE
 
-    public void rollerCollect() {
-        setDeployVelocity(CollectorConstants.COLLECTOR_COLLECT_VELOCITY);
+    public void collectorCollect() {
+        setCollectorVelocity(CollectorConstants.COLLECTOR_COLLECT_RPS);
 
         collectionState = CollectionState.COLLECTING;
     }
 
+    public void collectorDisabled () {
+        collectMotor.stopMotor();
 
+        collectionState = CollectionState.DISABLED;
+    }
 
-    // STATES
+    public void collectorEject () {
+        setCollectorVelocity(CollectorConstants.COLLECTOR_EJECT_VELOCITY);
+
+        collectionState = CollectionState.EJECTING;
+    }
+
+    public void deploymentDeploy() {
+        setDeployPos(CollectorConstants.DEPLOYMENT_DEPLOY_POSITION);
+
+        deploymentState = DeploymentState.DEPLOYED;
+    }
+
+    public void  deploymentEject() {
+        setDeployPos(CollectorConstants.EJECT_POSITION);
+
+        deploymentState = DeploymentState.EJECT;
+    }
+
+    public void deploymentUnEject() {
+        switch (preEjectState) {
+            case DEPLOYED ->  deploymentDeploy();
+            case STOWED ->  deploymentStow();
+            default -> {}
+        }
+    }
+
+    public void deploymentStow() {
+        setDeployPos(CollectorConstants.STOW_POSITION);
+
+        preEjectState = deploymentState;
+        deploymentState = DeploymentState.STOWED;
+    }
+
+    public CollectionState getCollectionState() {
+        return collectionState;
+    }
+
+    // THE (UNITED) STATES
 
     public enum CollectionState {
         COLLECTING,
