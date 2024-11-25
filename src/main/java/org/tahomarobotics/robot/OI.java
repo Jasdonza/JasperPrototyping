@@ -40,8 +40,7 @@ public class OI extends SubsystemIF {
 
 
 
-        driveController.leftBumper().onTrue(Commands.runOnce(() -> collector.setShouldDeploy(true)))
-                .onFalse(Commands.runOnce(() -> collector.setShouldDeploy(false)));
+        driveController.leftBumper().onTrue(Commands.runOnce(collector::ToggleDeploy));
 
         driveController.leftTrigger().whileTrue(Commands.run(() -> collector.setShouldCollect(true)))
                 .whileFalse(Commands.runOnce(() -> collector.setShouldCollect(false)));

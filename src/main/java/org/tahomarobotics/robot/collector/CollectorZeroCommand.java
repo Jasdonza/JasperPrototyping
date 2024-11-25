@@ -2,6 +2,8 @@ package org.tahomarobotics.robot.collector;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
+import static org.tahomarobotics.robot.collector.Collector.DeploymentState.DEPLOYED;
+
 public class CollectorZeroCommand extends Command {
     public Collector collector = Collector.getInstance();
 

@@ -31,7 +31,7 @@ public class Collector extends SubsystemIF {
     //I REQUEST CONTROL NOW
 
     public void ToggleDeploy () {
-
+        shouldDeploy = !shouldDeploy;
     }
 
     public void setShouldDeploy(boolean shouldbeDeploy) {
@@ -141,6 +141,7 @@ public class Collector extends SubsystemIF {
     public void zeroCollector() {
         deployLeft.setPosition(0);
         deployRight.setPosition(0);
+        deploymentDeploy();
     }
 
     // STATE MACHINE
