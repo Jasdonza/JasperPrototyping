@@ -92,7 +92,7 @@ public class Collector extends SubsystemIF {
     private Collector() {
         deployLeft.getConfigurator().apply(CollectorConstants.deployMotorConfiguration);
         deployRight.getConfigurator().apply(CollectorConstants.deployMotorConfiguration);
-        deployLeft.setInverted(true);
+        deployRight.setInverted(true);
         collectMotor.getConfigurator().apply(CollectorConstants.collectMotorConfiguration);
     }
 
