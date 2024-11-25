@@ -3,7 +3,9 @@ package org.tahomarobotics.robot.indexer;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.tahomarobotics.robot.RobotMap;
+import org.tahomarobotics.robot.collector.Collector;
 import org.tahomarobotics.robot.util.SubsystemIF;
 
 
@@ -61,9 +63,11 @@ public class Indexer extends SubsystemIF {
                 if (getBeamBrakeTwoBreakage()) stateCollected();
             }
         }
+        SmartDashboard.putString("IndexerState", state.toString());
     }
 
     // STATUS SIGNALS
+
 
 
 
@@ -78,7 +82,9 @@ public class Indexer extends SubsystemIF {
             }
 
             // GETTERS
-
+            public Indexer.State state() {
+                return state;
+            }
             public double getTopMotorVelocity () {
                 return topMotor.getVelocity().getValueAsDouble();
             }

@@ -39,10 +39,11 @@ public class OI extends SubsystemIF {
         Indexer indexer = Indexer.getInstance();
 
 
+
         driveController.leftBumper().onTrue(Commands.runOnce(() -> collector.setShouldDeploy(true)))
                 .onFalse(Commands.runOnce(() -> collector.setShouldDeploy(false)));
 
-        driveController.leftTrigger().whileTrue(Commands.runOnce(() -> collector.setShouldCollect(true)))
+        driveController.leftTrigger().whileTrue(Commands.run(() -> collector.setShouldCollect(true)))
                 .whileFalse(Commands.runOnce(() -> collector.setShouldCollect(false)));
 
         driveController.povLeft().onTrue((Commands.runOnce(() -> indexer.setShouldEject(true))))

@@ -3,6 +3,7 @@ package org.tahomarobotics.robot.collector;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.tahomarobotics.robot.RobotMap;
 import org.tahomarobotics.robot.util.SubsystemIF;
 
@@ -74,6 +75,8 @@ public class Collector extends SubsystemIF {
                 if (shouldEject) collectorEject();
             }
         }
+        SmartDashboard.putString("DeploymentState", getDeploymentState().toString());
+        SmartDashboard.putString("CollectionState", getCollectionState().toString());
     }
 
 
@@ -103,6 +106,12 @@ public class Collector extends SubsystemIF {
 
     // GETTERS
     //"YOU HAVE THIS INFORMATION? IT'S OUR'S NOW, COMRADE"
+
+
+    public DeploymentState getDeploymentState() {
+        return deploymentState;
+    }
+
 
     public double getLeftPivotVelocity() {
         return deployLeft.getVelocity().getValueAsDouble();
