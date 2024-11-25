@@ -6,6 +6,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.util.Units;
 
+
 public class CollectorConstants {
     public final static double STOW_POSITION = Units.degreesToRotations(82),
             COLLECT_POSITION = Units.degreesToRotations(182.5),

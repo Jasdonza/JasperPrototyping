@@ -12,6 +12,8 @@ import org.tahomarobotics.robot.collector.Collector;
 import org.tahomarobotics.robot.indexer.Indexer;
 import org.tahomarobotics.robot.util.SubsystemIF;
 
+import static java.lang.Boolean.TRUE;
+
 public class OI extends SubsystemIF {
     private final static OI INSTANCE = new OI();
 
@@ -27,15 +29,24 @@ public class OI extends SubsystemIF {
         CommandScheduler.getInstance().unregisterSubsystem(this);
 
         configureBindings();
-
     }
-
     /**
      * Configure the button bindings for the controller(s).
      */
+
     private void configureBindings() {
         Collector collector = Collector.getInstance();
         Indexer indexer = Indexer.getInstance();
 
+
+        driveController.leftBumper().onTrue(Commands.runOnce(() -> collector.setShouldDeploy(true)))
+                .onFalse(Commands.runOnce(() -> collector.setShouldDeploy(false)));
+
+        driveController.leftTrigger().whileTrue(Commands.runOnce(() -> collector.setShouldCollect(true)))
+                .whileFalse(Commands.runOnce(() -> collector.setShouldCollect(false)));
+
+        driveController.povLeft().onTrue((Commands.runOnce(() -> indexer.setShouldEject(true))))
+                .onFalse((Commands.runOnce(() -> indexer.setShouldEject(false))));
     }
 }
+//I still don't understand OI.

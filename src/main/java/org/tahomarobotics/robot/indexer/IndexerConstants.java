@@ -6,7 +6,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class IndexerConstants {
     static final double INDEX_RPS = 8;
-
+    static final double STOP_RPS = 0;
     static final double INTAKE_RPS = 15;
     static final double EJECT_RPS = -INTAKE_RPS;
     private static final double INTAKE_ACCEL = INTAKE_RPS / 0.25;

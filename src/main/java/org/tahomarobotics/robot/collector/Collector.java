@@ -12,6 +12,8 @@ public class Collector extends SubsystemIF {
     private boolean shouldDeploy;
     private boolean shouldStow;
 
+    private boolean shouldCollect;
+
     private static final Collector INSTANCE = new Collector();
 
     // MOTORS
@@ -27,10 +29,24 @@ public class Collector extends SubsystemIF {
     // CONTROL REQUESTS
     //I REQUEST CONTROL NOW
 
+    public void ToggleDeploy () {
+
+    }
+
+    public void setShouldDeploy(boolean shouldbeDeploy) {
+        this.shouldDeploy = shouldbeDeploy;
+    }
+        public void setShouldCollect(boolean shouldCollect) {
+            this.shouldCollect = shouldCollect;
+    }
+
+
+
     @Override
     public void periodic() {
         switch (deploymentState) {
             case DEPLOYED -> {
+                if (shouldDeploy) deploymentDeploy();
                 if (!shouldDeploy) deploymentStow();
                 if (shouldEject) collectorEject();
             }
@@ -47,6 +63,7 @@ public class Collector extends SubsystemIF {
 
         switch (collectionState) {
             case COLLECTING -> {
+                if (shouldCollect) collectorCollect();
                 if (!shouldDeploy) collectorDisabled();
                 if (shouldEject) collectorEject();
             }
