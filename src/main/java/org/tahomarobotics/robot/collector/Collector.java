@@ -77,6 +77,7 @@ public class Collector extends SubsystemIF {
         }
         SmartDashboard.putString("DeploymentState", getDeploymentState().toString());
         SmartDashboard.putString("CollectionState", getCollectionState().toString());
+        SmartDashboard.putString("CollectionState", getCollectionState().toString());
     }
 
 
@@ -91,7 +92,7 @@ public class Collector extends SubsystemIF {
     private Collector() {
         deployLeft.getConfigurator().apply(CollectorConstants.deployMotorConfiguration);
         deployRight.getConfigurator().apply(CollectorConstants.deployMotorConfiguration);
-        deployRight.setInverted(true);
+        deployLeft.setInverted(true);
         collectMotor.getConfigurator().apply(CollectorConstants.collectMotorConfiguration);
     }
 
@@ -120,6 +121,7 @@ public class Collector extends SubsystemIF {
     public double getRightPivotVelocity() {
         return deployRight.getVelocity().getValueAsDouble();
     }
+
 
     // SETTERS
     //OH BOY, HERE I GO SETTING AGAIN
