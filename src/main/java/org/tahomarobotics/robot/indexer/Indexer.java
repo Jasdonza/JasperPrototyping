@@ -46,7 +46,7 @@ public class Indexer extends SubsystemIF {
         switch (state) {
             case INTAKING -> {
                 if (shouldIntake) stateIntake();
-                if (!shouldIndex) stateIntake();
+                if (!shouldIntake) stateIntake();
             }
             case INDEXING -> {
                 if (getBeamBrakeOneBreakage()) stateIndex();
