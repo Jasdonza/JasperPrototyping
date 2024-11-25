@@ -12,7 +12,6 @@ public class Collector extends SubsystemIF {
 
     private boolean shouldEject;
     private boolean shouldDeploy;
-    private boolean shouldStow;
 
     private boolean shouldCollect;
 
@@ -35,9 +34,6 @@ public class Collector extends SubsystemIF {
         shouldDeploy = !shouldDeploy;
     }
 
-    public void setShouldDeploy(boolean shouldbeDeploy) {
-        this.shouldDeploy = shouldbeDeploy;
-    }
         public void setShouldCollect(boolean shouldCollect) {
             this.shouldCollect = shouldCollect;
     }
@@ -48,7 +44,6 @@ public class Collector extends SubsystemIF {
     public void periodic() {
         switch (deploymentState) {
             case DEPLOYED -> {
-                if (shouldDeploy) deploymentDeploy();
                 if (!shouldDeploy) deploymentStow();
                 if (shouldEject) deploymentEject();
             }
@@ -56,7 +51,7 @@ public class Collector extends SubsystemIF {
                 if (!shouldEject) deploymentUnEject();
             }
             case STOWED -> {
-                if (!shouldStow) deploymentDeploy();
+                if (shouldDeploy) deploymentDeploy();
                 if (shouldEject) deploymentEject();
             }
             case ZEROING -> {
@@ -65,7 +60,6 @@ public class Collector extends SubsystemIF {
 
         switch (collectionState) {
             case COLLECTING -> {
-                if (shouldCollect) collectorCollect();
                 if (!shouldDeploy) collectorDisabled();
                 if (shouldEject) collectorEject();
             }
@@ -168,7 +162,7 @@ public class Collector extends SubsystemIF {
     }
 
     public void deploymentDeploy() {
-        setDeployPos(CollectorConstants.DEPLOYMENT_DEPLOY_POSITION);
+        setDeployPos(CollectorConstants.COLLECT_POSITION);
 
         deploymentState = DeploymentState.DEPLOYED;
     }
