@@ -77,7 +77,6 @@ public class Collector extends SubsystemIF {
         }
         SmartDashboard.putString("DeploymentState", getDeploymentState().toString());
         SmartDashboard.putString("CollectionState", getCollectionState().toString());
-        SmartDashboard.putString("CollectionState", getCollectionState().toString());
     }
 
 
