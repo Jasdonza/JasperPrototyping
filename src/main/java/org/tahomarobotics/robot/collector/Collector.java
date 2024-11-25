@@ -50,7 +50,7 @@ public class Collector extends SubsystemIF {
             case DEPLOYED -> {
                 if (shouldDeploy) deploymentDeploy();
                 if (!shouldDeploy) deploymentStow();
-                if (shouldEject) collectorEject();
+                if (shouldEject) deploymentEject();
             }
             case EJECT -> {
                 if (!shouldEject) deploymentUnEject();
