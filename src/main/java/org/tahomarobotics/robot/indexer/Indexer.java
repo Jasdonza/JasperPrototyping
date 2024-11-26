@@ -1,5 +1,6 @@
 package org.tahomarobotics.robot.indexer;
 
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -74,7 +75,6 @@ public class Indexer extends SubsystemIF {
     private Indexer() {
                 bottomMotor.getConfigurator().apply(IndexerConstants.indexMotorConfiguration);
                 topMotor.getConfigurator().apply(IndexerConstants.indexMotorConfiguration);
-                topMotor.setInverted(true);
             }
 
             public static Indexer getInstance () {
@@ -105,6 +105,7 @@ public class Indexer extends SubsystemIF {
 
             private void setMotorVelocity ( double velocity){
                 bottomMotor.setControl(Velocity.withVelocity(velocity));
+                topMotor.setControl(new Follower(RobotMap.INDEXER_MOTOR, true));
             }
 
             public void setMotorVoltage ( double voltage){
