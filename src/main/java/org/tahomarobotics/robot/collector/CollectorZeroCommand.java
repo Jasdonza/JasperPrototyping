@@ -13,7 +13,7 @@ public class CollectorZeroCommand extends Command {
 
     @Override
     public void execute() {
-        collector.setDeployVoltage(-2);
+        collector.setDeployVoltage(-.5);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class CollectorZeroCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        if (collector.getLeftPivotVelocity() < -.5 ) {
+        if (collector.getLeftPivotVelocity() < -.4 ) {
             return true;
         } return false;
     }
