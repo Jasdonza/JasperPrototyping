@@ -17,6 +17,7 @@ public class Collector extends SubsystemIF {
 
     private static final Collector INSTANCE = new Collector();
 
+
     // MOTORS
     //THEY ORS A MOT
     private final TalonFX deployLeft = new TalonFX(RobotMap.DEPLOY_MOTOR_LEFT);
