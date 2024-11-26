@@ -24,7 +24,7 @@ public class CollectorZeroCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        if (collector.getLeftPivotVelocity() > -.5 ) {
+        if (collector.getLeftPivotVelocity() < -.5 ) {
             return true;
         } return false;
     }

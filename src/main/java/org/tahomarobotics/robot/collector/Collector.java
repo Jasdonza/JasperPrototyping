@@ -37,42 +37,57 @@ public class Collector extends SubsystemIF {
         public void setShouldCollect(boolean shouldCollect) {
             this.shouldCollect = shouldCollect;
     }
+    public void collectorCollect() {
+        setCollectorVelocity(CollectorConstants.COLLECTOR_COLLECT_RPS);
 
-
-
-    @Override
-    public void periodic() {
-        switch (deploymentState) {
-            case DEPLOYED -> {
-                if (!shouldDeploy) deploymentStow();
-                if (shouldEject) deploymentEject();
-            }
-            case EJECT -> {
-                if (!shouldEject) deploymentUnEject();
-            }
-            case STOWED -> {
-                if (shouldDeploy) deploymentDeploy();
-                if (shouldEject) deploymentEject();
-            }
-            case ZEROING -> {
-            }
-        }
-
-        switch (collectionState) {
-            case COLLECTING -> {
-                if (!shouldDeploy) collectorDisabled();
-                if (shouldEject) collectorEject();
-            }
-            case EJECTING -> {
-            }
-            case DISABLED -> {
-                if (shouldDeploy) collectorCollect();
-                if (shouldEject) collectorEject();
-            }
-        }
-        SmartDashboard.putString("DeploymentState", getDeploymentState().toString());
-        SmartDashboard.putString("CollectionState", getCollectionState().toString());
+        collectionState = CollectionState.COLLECTING;
     }
+
+    public void collectorDisabled () {
+        collectMotor.stopMotor();
+
+        collectionState = CollectionState.DISABLED;
+    }
+
+    public void collectorEject () {
+        setCollectorVelocity(CollectorConstants.COLLECTOR_EJECT_VELOCITY);
+
+        collectionState = CollectionState.EJECTING;
+    }
+
+    public void deploymentDeploy() {
+        setDeployPos(CollectorConstants.COLLECT_POSITION);
+
+        deploymentState = DeploymentState.DEPLOYED;
+    }
+
+    public void  deploymentEject() {
+        setDeployPos(CollectorConstants.EJECT_POSITION);
+
+        deploymentState = DeploymentState.EJECT;
+    }
+
+    public void deploymentUnEject() {
+        switch (preEjectState) {
+            case DEPLOYED ->  deploymentDeploy();
+            case STOWED ->  deploymentStow();
+            default -> {}
+        }
+    }
+
+    public void deploymentStow() {
+        setDeployPos(CollectorConstants.STOW_POSITION);
+
+        preEjectState = deploymentState;
+        deploymentState = DeploymentState.STOWED;
+    }
+
+    public CollectionState getCollectionState() {
+        return collectionState;
+    }
+
+
+
 
 
     // STATUS SIGNALS
@@ -142,55 +157,40 @@ public class Collector extends SubsystemIF {
 
     // STATE MACHINE
     //I STATE, THE MACHINE
-
-    public void collectorCollect() {
-        setCollectorVelocity(CollectorConstants.COLLECTOR_COLLECT_RPS);
-
-        collectionState = CollectionState.COLLECTING;
-    }
-
-    public void collectorDisabled () {
-        collectMotor.stopMotor();
-
-        collectionState = CollectionState.DISABLED;
-    }
-
-    public void collectorEject () {
-        setCollectorVelocity(CollectorConstants.COLLECTOR_EJECT_VELOCITY);
-
-        collectionState = CollectionState.EJECTING;
-    }
-
-    public void deploymentDeploy() {
-        setDeployPos(CollectorConstants.COLLECT_POSITION);
-
-        deploymentState = DeploymentState.DEPLOYED;
-    }
-
-    public void  deploymentEject() {
-        setDeployPos(CollectorConstants.EJECT_POSITION);
-
-        deploymentState = DeploymentState.EJECT;
-    }
-
-    public void deploymentUnEject() {
-        switch (preEjectState) {
-            case DEPLOYED ->  deploymentDeploy();
-            case STOWED ->  deploymentStow();
-            default -> {}
+    @Override
+    public void periodic() {
+        switch (deploymentState) {
+            case DEPLOYED -> {
+                if (!shouldDeploy) deploymentStow();
+                if (shouldEject) deploymentEject();
+            }
+            case EJECT -> {
+                if (!shouldEject) deploymentUnEject();
+            }
+            case STOWED -> {
+                if (shouldDeploy) deploymentDeploy();
+                if (shouldEject) deploymentEject();
+            }
+            case ZEROING -> {
+            }
         }
+
+        switch (collectionState) {
+            case COLLECTING -> {
+                if (!shouldDeploy) collectorDisabled();
+                if (shouldEject) collectorEject();
+            }
+            case EJECTING -> {
+            }
+            case DISABLED -> {
+                if (shouldDeploy) collectorCollect();
+                if (shouldEject) collectorEject();
+            }
+        }
+        SmartDashboard.putString("DeploymentState", getDeploymentState().toString());
+        SmartDashboard.putString("CollectionState", getCollectionState().toString());
     }
 
-    public void deploymentStow() {
-        setDeployPos(CollectorConstants.STOW_POSITION);
-
-        preEjectState = deploymentState;
-        deploymentState = DeploymentState.STOWED;
-    }
-
-    public CollectionState getCollectionState() {
-        return collectionState;
-    }
 
     // THE (UNITED) STATES
 
